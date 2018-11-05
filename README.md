@@ -1,2 +1,2 @@
-# dplus
-Something silimar to AUR /w Yaourt but it's the debian one
+# recipes for building deb packages
+Packages from github that do not have deb. Here, by running the setup, you can do it.
