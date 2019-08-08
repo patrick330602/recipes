@@ -4,6 +4,8 @@ BUILD_NC_DIR=`mktemp --tmpdir --directory nms-nc-build-debian.XXXX`
 BUILD_VER="0.3.3"
 CURRENT_DIR=`pwd`
 
+git clone https://github.com/bartobri/no-more-secrets sources
+
 mkdir -p $BUILD_DIR/{DEBIAN/,usr/bin/,usr/share/man/man6/}
 
 touch $BUILD_DIR/DEBIAN/control
@@ -18,10 +20,12 @@ Conflicts: nms-ncurses
 Description: A tool set to recreate the famous "decrypting text" effect as seen in the 1992 movie Sneakers.
 EOF
 
+cd sources
 make all
+cd
 
-cp bin/* $BUILD_DIR/usr/bin/
-cp *.6 $BUILD_DIR/usr/share/man/man6
+cp $CURRENT_DIR/sources/bin/* $BUILD_DIR/usr/bin
+cp $CURRENT_DIR/sources/*.6 $BUILD_DIR/usr/share/man/man6
 
 cd $BUILD_DIR
 find . -type f ! -regex '.*.hg.*' ! -regex '.*?debian-binary.*' ! -regex '.*?DEBIAN.*' -printf '%P ' | xargs md5sum > DEBIAN/md5sums
@@ -53,10 +57,12 @@ Conflicts: nms
 Description: A tool set to recreate the famous "decrypting text" effect as seen in the 1992 movie Sneakers.
 EOF
 
+cd sources
 make all-ncurses
+cd ..
 
-cp bin/* $BUILD_NC_DIR/usr/bin/
-cp *.6 $BUILD_NC_DIR/usr/share/man/man6
+cp sources/bin/* $BUILD_NC_DIR/usr/bin/
+cp sources/*.6 $BUILD_NC_DIR/usr/share/man/man6
 
 cd $BUILD_NC_DIR
 find . -type f ! -regex '.*.hg.*' ! -regex '.*?debian-binary.*' ! -regex '.*?DEBIAN.*' -printf '%P ' | xargs md5sum > DEBIAN/md5sums
@@ -72,3 +78,5 @@ sudo dpkg -b $BUILD_NC_DIR/ nms-ncurses-${BUILD_VER}.deb
 
 rm -rf $BUILD_NC_DIR
 cd $CURRENT_DIR
+
+rm -rf $CURRENT_DIR/sources
