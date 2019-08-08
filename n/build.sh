@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 BUILD_DIR=`mktemp --tmpdir --directory nms-build-debian.XXXX`
-BUILD_VER="2.1.12"
+BUILD_VER="6.0.0"
 CURRENT_DIR=`pwd`
+
+git clone https://github.com/tj/n sources
 
 mkdir -p $BUILD_DIR/{DEBIAN/,usr/bin/}
 
@@ -12,11 +14,11 @@ Package: n
 Architecture: all
 Maintainer: TJ Holowaychuk <tj@vision-media.ca>
 Priority: optional
-Version: $BUILD_VER-1
+Version: $BUILD_VER-0
 Description: Interactively Manage All Your Node Versions
 EOF
 
-cp bin/* $BUILD_DIR/usr/bin/
+cp sources/bin/* $BUILD_DIR/usr/bin/
 
 cd $BUILD_DIR
 find . -type f ! -regex '.*.hg.*' ! -regex '.*?debian-binary.*' ! -regex '.*?DEBIAN.*' -printf '%P ' | xargs md5sum > DEBIAN/md5sums
@@ -31,3 +33,4 @@ dpkg -b $BUILD_DIR/ n-${BUILD_VER}.deb
 
 rm -rf $BUILD_DIR
 cd $CURRENT_DIR
+rm -rf sources
