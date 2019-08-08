@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 BUILD_DIR=`mktemp --tmpdir --directory genact-build-debian.XXXX`
-BUILD_VER="0.6.0"
+BUILD_VER="0.7.0"
 CURRENT_DIR=`pwd`
 
 mkdir -p $BUILD_DIR/{DEBIAN/,usr/bin/}
@@ -12,7 +12,7 @@ Package: genact
 Architecture: all
 Maintainer: Sven-Hendrik Haase <svenstaro@gmail.com>
 Priority: optional
-Version: $BUILD_VER-1~cookrecipe
+Version: $BUILD_VER-1
 Description: a nonsense activity generator 
 EOF
 
